@@ -1,0 +1,96 @@
+scalar Date
+
+type Query {
+    me: User!
+}
+
+type User {
+    id: ID!
+    emails: [String!]
+    username: String!
+    accounts: [Account!]!
+    profile: Profile
+}
+
+type Profile {
+    firstName: String!
+    lastName: String!
+}
+
+enum Currency {
+    NIS
+    EUR
+    USD
+}
+
+input TransactionsFilter {
+    skip: Int
+    limit: Int
+}
+
+input TransactionSearch {
+    freeText: String
+    transactionType: String
+}
+
+interface Account {
+    id: ID!
+    owner: User!
+    number: Int!
+    branch: Int!
+    bank: Int!
+    balance: Float!
+    currency: Currency!
+    transactions(search: TransactionSearch, filter: TransactionsFilter): [Transaction]!
+}
+
+type CheckingAccount implements Account {
+    id: ID!
+    owner: User!
+    number: Int!
+    branch: Int!
+    bank: Int!
+    balance: Float!
+    currency: Currency!
+    transactions(search: TransactionSearch, filter: TransactionsFilter): [Transaction]!
+}
+
+interface Transaction {
+    id: ID!
+    amount: Float!
+    account: Account!
+    date: Date!
+}
+
+type TransferTransaction implements Transaction {
+    id: ID!
+    amount: Float!
+    account: Account!
+    date: Date!
+
+    source: Account!
+    description: String
+}
+
+type CheckDepositTransaction implements Transaction {
+    id: ID!
+    amount: Float!
+    account: Account!
+    date: Date!
+
+    checkNumber: Int!
+}
+
+type MoneyWithdrawTransaction implements Transaction {
+    id: ID!
+    amount: Float!
+    account: Account!
+    date: Date!
+
+    atmDetails: AtmDetails!
+}
+
+type AtmDetails {
+    id: ID!
+    locationName: String!
+}
