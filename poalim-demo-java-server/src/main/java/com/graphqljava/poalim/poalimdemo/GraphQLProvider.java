@@ -38,6 +38,7 @@ public class GraphQLProvider {
 
     private RuntimeWiring buildWiring() {
         QueryResolver queryResolver = new QueryResolver();
+        MutationResolver mutationResolver = new MutationResolver();
         UserResolver userResolver = new UserResolver();
         ProfileResolver profileResolver = new ProfileResolver();
         CheckingAccountResolver checkingAccountResolver = new CheckingAccountResolver();
@@ -55,6 +56,8 @@ public class GraphQLProvider {
                 .type(newTypeWiring("Query").dataFetcher("me", queryResolver.me()))
                 .type(newTypeWiring("Query").dataFetcher("account", queryResolver.account()))
                 .type(newTypeWiring("Query").dataFetcher("transaction", queryResolver.transaction()))
+                // Root Mutations
+                .type(newTypeWiring("Mutation").dataFetcher("login", mutationResolver.login()))
                 // User Fields
                 .type(newTypeWiring("User").dataFetcher("id", userResolver.id()))
                 .type(newTypeWiring("User").dataFetcher("emails", userResolver.emails()))

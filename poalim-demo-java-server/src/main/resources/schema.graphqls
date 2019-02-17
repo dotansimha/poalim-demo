@@ -2,7 +2,7 @@
 # Represents a ISO Date string
 scalar Date
 
-# Root of query
+# Root of queries
 type Query {
     # Returns the current logged in user
     me: User!
@@ -12,9 +12,22 @@ type Query {
     transaction(id: ID!): Transaction!
 }
 
+# Root of mutations
 type Mutation {
+    # Log in using username and password
+    login(username: String!, password: String!): LoginResult!
+    # Order a new check book
     orderNewCheckBook(accountId: ID!): CheckBookOrder!
-    depositCheck(checkNumber: Int!, accountId: ID!): CheckDepositTransaction!
+    # Deposit a check to a specific account
+    depositCheck(checkNumber: Int!, accountId: ID!, fileId: String!): CheckDepositTransaction!
+}
+
+# Result of login mutation
+type LoginResult {
+    # Auth token
+    token: String!
+    # Logged in user
+    user: User!
 }
 
 type CheckBookOrder {
