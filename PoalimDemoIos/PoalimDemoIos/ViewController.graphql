@@ -1,0 +1,36 @@
+query me {
+  me {
+    accounts {
+      transactions {
+        id
+        date
+        amount
+        
+        ... on MoneyWithdrawTransaction {
+          atmDetails {
+            locationName
+          }
+        }
+        
+        ... on CheckDepositTransaction {
+          checkNumber
+        }
+        
+        ... on TransferTransaction {
+          description
+          source {
+            bank
+            branch
+            owner {
+              id
+              profile {
+                firstName
+                lastName
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
