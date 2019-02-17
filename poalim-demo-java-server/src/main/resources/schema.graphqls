@@ -1,96 +1,166 @@
+# Represents a ISO Date string
 scalar Date
 
 type Query {
+    # Returns the current logged in user
     me: User!
+    # Returns a specific bank account by id
+    account(id: ID!): Account!
+    # Returns a specific transaction by id
+    transaction(id: ID!): Transaction!
 }
 
+# Defined the user
 type User {
+    # The id of the user account
     id: ID!
+    # List of the user emails
     emails: [String!]
+    # Username (login) of the the username
     username: String!
-    accounts: [Account!]!
+    # List of bank accounts related to the user
+    accounts(filter: FilterAccount): [Account!]!
+    # Profile details
     profile: Profile
 }
 
+# Filter that allow you to get specific accounts
+input FilterAccount {
+    id: ID!
+}
+
+# Represents a user profile details
 type Profile {
     firstName: String!
     lastName: String!
 }
 
+# Enumarations of the currency
 enum Currency {
     NIS
     EUR
     USD
 }
 
+# Filters the list of transactions
 input TransactionsFilter {
+    # Skip a specific amount of transactions
     skip: Int
+    # Limit the amount of the transactions
     limit: Int
 }
 
+# Filters the list of transaction by search
 input TransactionSearch {
+    # Free text to look for
     freeText: String
+    # The type of the transaction
     transactionType: String
 }
 
+# Represents a general bank account
 interface Account {
+    # Record ID of the account
     id: ID!
+    # Link to the account's owner
     owner: User!
+    # The bank account number
     number: Int!
+    # The branch number of the account
     branch: Int!
+    # The bank number of the account
     bank: Int!
+    # The calculated balance of the account
     balance: Float!
+    # The currency of the account
     currency: Currency!
+    # List of the account transactions
     transactions(search: TransactionSearch, filter: TransactionsFilter): [Transaction]!
 }
 
+# Represents a checking account
 type CheckingAccount implements Account {
+    # Record ID of the account
     id: ID!
+    # Link to the account's owner
     owner: User!
+    # The bank account number
     number: Int!
+    # The branch number of the account
     branch: Int!
+    # The bank number of the account
     bank: Int!
+    # The calculated balance of the account
     balance: Float!
+    # The currency of the account
     currency: Currency!
+    # List of the account transactions
     transactions(search: TransactionSearch, filter: TransactionsFilter): [Transaction]!
 }
 
+# Represents a back account transaction
 interface Transaction {
+    # The ID of the transaction
     id: ID!
+    # The amount of the record
     amount: Float!
+    # Link to the transaction's account
     account: Account!
+    # ISO Date
     date: Date!
 }
 
+# Represents a transfer transaction
 type TransferTransaction implements Transaction {
+    # The ID of the transaction
     id: ID!
+    # The amount of the record
     amount: Float!
+    # Link to the transaction's account
     account: Account!
+    # ISO Date
     date: Date!
 
+    # The account details that transfered the money
     source: Account!
+    # The client description of the transfer
     description: String
 }
 
+# Represents a check deposit transaction
 type CheckDepositTransaction implements Transaction {
+    # The ID of the transaction
     id: ID!
+    # The amount of the record
     amount: Float!
+    # Link to the transaction's account
     account: Account!
+    # ISO Date
     date: Date!
 
+    # The number of the check
     checkNumber: Int!
 }
 
+# Represents a money withdraw transaction
 type MoneyWithdrawTransaction implements Transaction {
+    # The ID of the transaction
     id: ID!
+    # The amount of the record
     amount: Float!
+    # Link to the transaction's account
     account: Account!
+    # ISO Date
     date: Date!
 
+    # The details of the ATM
     atmDetails: AtmDetails!
 }
 
+# Details of the ATM
 type AtmDetails {
+    # The ID of the ATM
     id: ID!
+    # The address of the ATM
     locationName: String!
 }

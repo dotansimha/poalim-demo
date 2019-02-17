@@ -17,7 +17,7 @@ public class Mocks {
     );
 
     public static List<Atm> MOCK_ATMS = Arrays.asList(
-            new Atm("1", "Tel Aviv")
+            new Atm("1", "HaNegev 11, Tel Aviv")
     );
 
     public static List<BaseTransaction> MOCK_TRANSACTIONS = Arrays.asList(

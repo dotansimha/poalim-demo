@@ -52,7 +52,9 @@ public class GraphQLProvider {
                 .type(newTypeWiring("Account").typeResolver(new AccountInterfaceResolver()))
                 .type(newTypeWiring("Transaction").typeResolver(new TransactionInterfaceResolver()))
                 // Root Queries
-                .type(newTypeWiring("Query").dataFetcher("me", queryResolver.getMeDataFetcher()))
+                .type(newTypeWiring("Query").dataFetcher("me", queryResolver.me()))
+                .type(newTypeWiring("Query").dataFetcher("account", queryResolver.account()))
+                .type(newTypeWiring("Query").dataFetcher("transaction", queryResolver.transaction()))
                 // User Fields
                 .type(newTypeWiring("User").dataFetcher("id", userResolver.id()))
                 .type(newTypeWiring("User").dataFetcher("emails", userResolver.emails()))

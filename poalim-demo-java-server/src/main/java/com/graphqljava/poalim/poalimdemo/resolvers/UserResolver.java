@@ -7,8 +7,10 @@ import com.graphqljava.poalim.poalimdemo.entities.User;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserResolver implements GraphQLResolver<User> {
     public DataFetcher<String> id() {
@@ -26,8 +28,14 @@ public class UserResolver implements GraphQLResolver<User> {
     public DataFetcher<List<BaseAccount>> accounts() {
         return environment -> {
             User user = environment.getSource();
+            Stream<BaseAccount> baseAccounts = Mocks.MOCK_ACCOUNTS.stream().filter(account -> account.getOwnerId().equals(user.getId()));
+            LinkedHashMap<String, String> filterArgument = environment.getArgument("filter");
 
-            return Mocks.MOCK_ACCOUNTS.stream().filter(account -> account.getOwnerId().equals(user.getId())).collect(Collectors.toList());
+            if (filterArgument != null && filterArgument.containsKey("id")) {
+                baseAccounts = baseAccounts.filter(a -> a.getId().equals(filterArgument.get("id")));
+            }
+
+            return baseAccounts.collect(Collectors.toList());
         };
     }
 }
