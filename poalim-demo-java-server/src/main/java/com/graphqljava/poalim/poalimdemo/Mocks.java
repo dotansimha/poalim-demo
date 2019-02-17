@@ -22,8 +22,11 @@ public class Mocks {
 
     public static List<BaseTransaction> MOCK_TRANSACTIONS = Arrays.asList(
             new TransferTransaction("1", MOCK_ACCOUNTS.get(0).getId(), "2019-10-02", 25920.01f, MOCK_ACCOUNTS.get(1).getId(), "money!"),
-            new TransferTransaction("2", MOCK_ACCOUNTS.get(0).getId(), "2019-10-02", 920f, MOCK_ACCOUNTS.get(1).getId(), null),
-            new CheckDepositTransaction("3", MOCK_ACCOUNTS.get(0).getId(), "2018-02-11", 500f, 9988),
-            new MoneyWithdrawTransaction("4", MOCK_ACCOUNTS.get(0).getId(), "2018-10-10", -600f, MOCK_ATMS.get(0).getId())
+            new TransferTransaction("2", MOCK_ACCOUNTS.get(0).getId(), "2019-10-01", 920f, MOCK_ACCOUNTS.get(1).getId(), null),
+            new TransferTransaction("3", MOCK_ACCOUNTS.get(0).getId(), "2019-10-03", 20f, MOCK_ACCOUNTS.get(1).getId(), null),
+            new TransferTransaction("4", MOCK_ACCOUNTS.get(0).getId(), "2019-10-06", 1220f, MOCK_ACCOUNTS.get(1).getId(), null),
+            new TransferTransaction("5", MOCK_ACCOUNTS.get(0).getId(), "2019-09-06", 20f, MOCK_ACCOUNTS.get(1).getId(), null),
+            new CheckDepositTransaction("6", MOCK_ACCOUNTS.get(0).getId(), "2018-02-11", 500f, 9988),
+            new MoneyWithdrawTransaction("7", MOCK_ACCOUNTS.get(0).getId(), "2018-10-10", -600f, MOCK_ATMS.get(0).getId())
     );
 }
