@@ -1,6 +1,8 @@
+
 # Represents a ISO Date string
 scalar Date
 
+# Root of query
 type Query {
     # Returns the current logged in user
     me: User!
@@ -8,6 +10,27 @@ type Query {
     account(id: ID!): Account!
     # Returns a specific transaction by id
     transaction(id: ID!): Transaction!
+}
+
+type Mutation {
+    orderNewCheckBook(accountId: ID!): CheckBookOrder!
+    depositCheck(checkNumber: Int!, accountId: ID!): CheckDepositTransaction!
+}
+
+type CheckBookOrder {
+    id: ID!
+    status: CheckBookOrderState!
+    date: Date!
+    user: User!
+    account: Account!
+}
+
+enum CheckBookOrderState {
+    PENDING
+    PRINTING
+    READY
+    PICKED_UP
+    CANCELLED
 }
 
 # Defined the user

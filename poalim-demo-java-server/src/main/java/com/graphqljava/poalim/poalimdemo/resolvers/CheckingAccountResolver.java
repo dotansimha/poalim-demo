@@ -7,6 +7,7 @@ import com.graphqljava.poalim.poalimdemo.entities.CheckingAccount;
 import com.graphqljava.poalim.poalimdemo.entities.User;
 import graphql.schema.DataFetcher;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,15 +23,17 @@ public class CheckingAccountResolver implements GraphQLResolver<CheckingAccount>
         };
     }
 
-    public DataFetcher<Double> balance() {
+    public DataFetcher<String> balance() {
         return environment -> {
             CheckingAccount account = environment.getSource();
-
-            return Mocks.MOCK_TRANSACTIONS
+            Double balance = Mocks.MOCK_TRANSACTIONS
                     .stream()
                     .filter(t -> t.getAccountId().equals(account.getId()))
                     .mapToDouble(t -> t.getAmount().doubleValue())
                     .sum();
+
+            return new DecimalFormat("#.##").format(balance);
+
         };
     }
 
